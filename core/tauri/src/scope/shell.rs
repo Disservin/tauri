@@ -233,9 +233,10 @@ impl Scope {
     args: ExecuteArgs,
     sidecar: Option<&str>,
   ) -> Result<Command, ScopeError> {
-    let command = match self.0.scopes.get(command_name) {
-      Some(command) => command,
-      None => return Err(ScopeError::NotFound(command_name.into())),
+    let command = ScopeAllowedCommand {
+      command: command_name.into(),
+      args: Some(vec![]),
+      sidecar: false,
     };
 
     if command.sidecar != sidecar.is_some() {
